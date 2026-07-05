@@ -1,9 +1,9 @@
 import { footerData } from "../data/footer";
 import {
-  DribbbleIcon,
+  GithubIcon,
   LinkedinIcon,
   TwitterIcon,
-  YoutubeIcon,
+  MailIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
 import type { IFooterLink } from "../types";
@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="flex flex-wrap justify-center md:justify-between overflow-hidden gap-10 md:gap-20 mt-40 py-6 px-6 md:px-16 lg:px-24 xl:px-32 text-[13px] text-gray-500">
+    <footer id="about" className="flex flex-wrap justify-center md:justify-between overflow-hidden gap-10 md:gap-20 mt-40 py-6 px-6 md:px-16 lg:px-24 xl:px-32 text-[13px] text-gray-500 border-t border-white/5 bg-background">
       <motion.div
         className="flex flex-wrap items-start gap-10 md:gap-35"
         initial={{ x: -150, opacity: 0 }}
@@ -36,7 +36,7 @@ export default function Footer() {
                 <li key={index}>
                   <Link
                     to={link.href}
-                    className="hover:text-pink-600 transition"
+                    className="hover:text-primary transition"
                   >
                     {link.name}
                   </Link>
@@ -58,34 +58,34 @@ export default function Footer() {
         </p>
         <div className="flex items-center gap-4 mt-3">
           <a
-            href="https://dribbble.com/prebuiltui"
+            href="https://github.com/variantbyx"
             target="_blank"
             rel="noreferrer"
           >
-            <DribbbleIcon className="size-5 hover:text-pink-500" />
+            <GithubIcon className="size-5 hover:text-primary transition-colors" />
           </a>
           <a
-            href="https://www.linkedin.com/company/prebuiltui"
+            href="https://www.linkedin.com/in/lukeshpoddar/"
             target="_blank"
             rel="noreferrer"
           >
-            <LinkedinIcon className="size-5 hover:text-pink-500" />
+            <LinkedinIcon className="size-5 hover:text-primary transition-colors" />
           </a>
-          <a href="https://x.com/prebuiltui" target="_blank" rel="noreferrer">
-            <TwitterIcon className="size-5 hover:text-pink-500" />
+          <a href="https://x.com/lukesh_rohit" target="_blank" rel="noreferrer">
+            <TwitterIcon className="size-5 hover:text-primary transition-colors" />
           </a>
           <a
-            href="https://www.youtube.com/@prebuiltui"
+            href="mailto:lukeshpoddar.dev@gmail.com"
             target="_blank"
             rel="noreferrer"
           >
-            <YoutubeIcon className="size-6 hover:text-pink-500" />
+            <MailIcon className="size-5 hover:text-primary transition-colors" />
           </a>
         </div>
         <p className="mt-3 text-center">
           &copy; {new Date().getFullYear()}{" "}
-          <a href="https://prebuiltui.com?utm_source=pixels">
-            Thumblify - Lukesh Poddar
+          <a href="https://github.com/variantbyx" className="hover:text-primary transition-colors">
+            Thumbly - Lukesh Poddar
           </a>
         </p>
       </motion.div>

@@ -19,7 +19,7 @@ export default function FeaturesSection() {
             key={index}
             className={`${
               index === 1
-                ? "p-px rounded-[13px] bg-linear-to-br from-pink-600 to-slate-800"
+                ? "p-px rounded-[13px] bg-linear-to-br from-primary to-slate-800"
                 : ""
             }`}
             initial={{ y: 150, opacity: 0 }}
@@ -46,7 +46,7 @@ export default function FeaturesSection() {
         ))}
       </div>
       <div className="mt-40 relative mx-auto max-w-5xl">
-        <div className="absolute -z-50 size-100 -top-10 -left-20 aspect-square rounded-full bg-pink-500/40 blur-3xl"></div>
+        <div className="absolute -z-50 size-100 -top-10 -left-20 aspect-square rounded-full bg-primary/20 blur-3xl"></div>
         <motion.p
           className="text-slate-300 text-lg text-left max-w-3xl"
           initial={{ y: 150, opacity: 0 }}
@@ -71,7 +71,7 @@ export default function FeaturesSection() {
             }}
           >
             <img
-              className="h-full w-auto"
+              className="h-full w-auto rounded-xl border border-slate-800"
               src="/assets/features-showcase-1.png"
               alt="features showcase"
               width={1000}
@@ -96,7 +96,7 @@ export default function FeaturesSection() {
               alt="features showcase"
               width={1000}
               height={500}
-              className="hover:-translate-y-0.5 transition duration-300"
+              className="hover:-translate-y-0.5 transition duration-300 rounded-xl border border-slate-800"
             />
             <h3 className="text-[24px]/7.5 text-slate-300 font-medium mt-6">
               Boost your views with AI-optimized designs{" "}
@@ -106,8 +106,8 @@ export default function FeaturesSection() {
               capture attention.
             </p>
             <a
-              href="https://prebuiltui.com"
-              className="group flex items-center gap-2 mt-4 text-pink-600 hover:text-pink-700 transition"
+              href="/generate"
+              className="group flex items-center gap-2 mt-4 text-primary hover:text-primary/80 transition"
             >
               Start generating free
               <ArrowUpRight className="size-5 group-hover:translate-x-0.5 transition duration-300" />

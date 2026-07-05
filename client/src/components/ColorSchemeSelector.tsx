@@ -22,7 +22,7 @@ const ColorSchemeSelector = ({
             className={`
               relative rounded-lg
               transition-all
-              ${value === scheme.id && "ring-2 ring-pink-500"}`}
+              ${value === scheme.id && "ring-2 ring-primary"}`}
             title={scheme.name}
           >
             <div className="flex h-10 rounded-lg overflow-hidden">

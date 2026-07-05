@@ -65,7 +65,7 @@ export default function TiltedImage({ rotateAmplitude = 3 }) {
       >
         <motion.img
           src="/hero_img.png"
-          className="border-b bg-linear-180 from-pink-500 to-transparent p-1 w-full rounded-[15px] will-change-transform transform-[translateZ(0)]"
+          className="border-b bg-linear-180 from-primary to-transparent p-1 w-full rounded-[15px] will-change-transform transform-[translateZ(0)]"
           alt="hero section showcase"
         />
       </motion.div>

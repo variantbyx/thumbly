@@ -1,63 +1,97 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import SoftBackDrop from "./SoftBackDrop";
+import { useAuth } from "../context/AuthContext";
+import { UserIcon, MailIcon, LockIcon, AlertCircleIcon, Loader2Icon } from "lucide-react";
 
 function Login() {
   const [state, setState] = useState("login");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login, register, error, clearError, isAuthenticated, loading } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
+  
+  const [localLoading, setLocalLoading] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
+
+  // Redirect if already authenticated
+  const from = (location.state as any)?.from?.pathname || "/generate";
+  
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, navigate, from]);
+
+  useEffect(() => {
+    clearError();
+    setLocalError(null);
+  }, [state]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLocalError(null);
+    setLocalLoading(true);
+
+    try {
+      if (state === "login") {
+        await login(formData.email, formData.password);
+      } else {
+        if (!formData.name.trim()) {
+          throw new Error("Name is required");
+        }
+        await register(formData.name, formData.email, formData.password);
+      }
+    } catch (err: any) {
+      setLocalError(err.message || "An error occurred. Please try again.");
+    } finally {
+      setLocalLoading(false);
+    }
   };
+
   return (
     <>
       <SoftBackDrop />
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background text-text-primary px-4">
         <form
           onSubmit={handleSubmit}
-          className="w-full sm:w-87.5 text-center bg-white/6 border border-white/10 rounded-2xl px-8"
+          className="w-full max-w-[380px] bg-surface/40 border border-slate-800 backdrop-blur-md rounded-2xl p-8 shadow-2xl flex flex-col"
         >
-          <h1 className="text-white text-3xl mt-10 font-medium">
-            {state === "login" ? "Login" : "Sign up"}
+          <h1 className="text-text-primary text-3xl mt-4 font-bold tracking-tight">
+            {state === "login" ? "Sign In" : "Sign Up"}
           </h1>
 
-          <p className="text-gray-400 text-sm mt-2">
-            Please sign in to continue
+          <p className="text-text-secondary text-sm mt-2">
+            {state === "login" ? "Enter your details to sign in" : "Create an account to get started"}
           </p>
 
+          {/* Error Message */}
+          {(localError || error) && (
+            <div className="mt-6 flex items-start gap-2.5 p-3 rounded-xl bg-danger/10 border border-danger/20 text-danger text-xs text-left">
+              <AlertCircleIcon size={16} className="shrink-0 mt-0.5" />
+              <p className="font-medium">{localError || error}</p>
+            </div>
+          )}
+
+          {/* Name Field (for Register) */}
           {state !== "login" && (
-            <div className="flex items-center mt-6 w-full bg-white/5 ring-2 ring-white/10 focus-within:ring-pink-500/60 h-12 rounded-full overflow-hidden pl-6 gap-2 transition-all ">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                className="text-white/60"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                {" "}
-                <circle cx="12" cy="8" r="5" />{" "}
-                <path d="M20 21a8 8 0 0 0-16 0" />{" "}
-              </svg>
+            <div className="flex items-center mt-6 w-full bg-slate-900/50 border border-slate-800 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary h-12 rounded-full overflow-hidden pl-5 gap-2 transition-all">
+              <UserIcon size={16} className="text-text-secondary" />
               <input
                 type="text"
                 name="name"
                 placeholder="Name"
-                className="w-full bg-transparent text-white placeholder-white/60 border-none outline-none "
+                className="w-full bg-transparent text-text-primary placeholder:text-text-secondary border-none outline-none text-sm pr-4"
                 value={formData.name}
                 onChange={handleChange}
                 required
@@ -65,86 +99,62 @@ function Login() {
             </div>
           )}
 
-          <div className="flex items-center w-full mt-4 bg-white/5 ring-2 ring-white/10 focus-within:ring-pink-500/60 h-12 rounded-full overflow-hidden pl-6 gap-2 transition-all ">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              className="text-white/75"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              {" "}
-              <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />{" "}
-              <rect x="2" y="4" width="20" height="16" rx="2" />{" "}
-            </svg>
+          {/* Email Field */}
+          <div className="flex items-center w-full mt-4 bg-slate-900/50 border border-slate-800 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary h-12 rounded-full overflow-hidden pl-5 gap-2 transition-all">
+            <MailIcon size={16} className="text-text-secondary" />
             <input
               type="email"
               name="email"
               placeholder="Email id"
-              className="w-full bg-transparent text-white placeholder-white/60 border-none outline-none "
+              className="w-full bg-transparent text-text-primary placeholder:text-text-secondary border-none outline-none text-sm pr-4"
               value={formData.email}
               onChange={handleChange}
               required
             />
           </div>
 
-          <div className=" flex items-center mt-4 w-full bg-white/5 ring-2 ring-white/10 focus-within:ring-pink-500/60 h-12 rounded-full overflow-hidden pl-6 gap-2 transition-all ">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              className="text-white/75"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              {" "}
-              <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />{" "}
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" />{" "}
-            </svg>
+          {/* Password Field */}
+          <div className="flex items-center mt-4 w-full bg-slate-900/50 border border-slate-800 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary h-12 rounded-full overflow-hidden pl-5 gap-2 transition-all">
+            <LockIcon size={16} className="text-text-secondary" />
             <input
               type="password"
               name="password"
               placeholder="Password"
-              className="w-full bg-transparent text-white placeholder-white/60 border-none outline-none"
+              className="w-full bg-transparent text-text-primary placeholder:text-text-secondary border-none outline-none text-sm pr-4"
               value={formData.password}
               onChange={handleChange}
               required
             />
           </div>
 
-          <div className="mt-4 text-left">
-            <button className="text-sm text-pink-400 hover:underline">
-              Forget password?
-            </button>
-          </div>
+          {state === "login" && (
+            <div className="mt-3 text-right">
+              <button type="button" className="text-xs text-primary hover:underline font-medium">
+                Forgot password?
+              </button>
+            </div>
+          )}
 
           <button
             type="submit"
-            className="mt-2 w-full h-11 rounded-full text-white bg-pink-600 hover:bg-pink-500 transition "
+            disabled={localLoading || loading}
+            className="mt-6 w-full h-11 rounded-full text-white bg-primary hover:bg-primary/95 transition-all font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-97 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {state === "login" ? "Login" : "Sign up"}
+            {(localLoading || loading) && <Loader2Icon size={16} className="animate-spin" />}
+            {state === "login" ? "Sign In" : "Sign Up"}
           </button>
 
           <p
             onClick={() =>
               setState((prev) => (prev === "login" ? "register" : "login"))
             }
-            className="text-gray-400 text-sm mt-3 mb-11 cursor-pointer"
+            className="text-text-secondary text-sm mt-6 mb-4 cursor-pointer self-center"
           >
             {state === "login"
               ? "Don't have an account?"
               : "Already have an account?"}
-            <span className="text-pink-400 hover:underline ml-1">
-              click here
+            <span className="text-primary hover:underline ml-1.5 font-semibold">
+              Click here
             </span>
           </p>
         </form>

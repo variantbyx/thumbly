@@ -7,7 +7,8 @@ import LenisScroll from "./components/LenisScroll";
 import Generate from "./pages/Generate";
 import MyGeneration from "./pages/MyGeneration";
 import YtPreview from "./pages/YtPreview";
-import Login from "./components/login";
+import Login from "./components/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { useEffect } from "react";
 
 export default function App() {
@@ -23,10 +24,38 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/generate" element={<Generate />} />
-        <Route path="/generate/:id" element={<Generate />} />
-        <Route path="/my-generation" element={<MyGeneration />} />
-        <Route path="/preview" element={<YtPreview />} />
+        <Route
+          path="/generate"
+          element={
+            <ProtectedRoute>
+              <Generate />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/generate/:id"
+          element={
+            <ProtectedRoute>
+              <Generate />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-generation"
+          element={
+            <ProtectedRoute>
+              <MyGeneration />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/preview"
+          element={
+            <ProtectedRoute>
+              <YtPreview />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<Login />} />
       </Routes>
       <Footer />

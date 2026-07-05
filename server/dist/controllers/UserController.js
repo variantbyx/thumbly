@@ -1,4 +1,4 @@
-import Thumbnail from '../models/Thumbnail.js';
+import Thumbnail from "../models/Thumbnail.js";
 // Controllers to get All User Thumbnails
 export const getUsersThumbnails = async (req, res) => {
     try {
