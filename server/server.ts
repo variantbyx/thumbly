@@ -36,8 +36,9 @@ app.use(
       "http://localhost:5174",
       "http://localhost:5175",
       "http://localhost:3000",
+      process.env.CLIENT_URL,
       "https://thumbly-tau.vercel.app",
-    ],
+    ].filter(Boolean) as string[],
     credentials: true,
   }),
 );

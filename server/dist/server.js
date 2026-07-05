@@ -24,8 +24,9 @@ app.use(cors({
         "http://localhost:5174",
         "http://localhost:5175",
         "http://localhost:3000",
+        process.env.CLIENT_URL,
         "https://thumbly-tau.vercel.app",
-    ],
+    ].filter(Boolean),
     credentials: true,
 }));
 app.set("trust proxy", 1);
