@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SoftBackDrop from "../components/SoftBackDrop";
+import SoftBackDrop from "../components/SoftBackdrop";
 import type { IThumbnail } from "../assets/assets";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowUpRightIcon, DownloadIcon, TrashIcon, Loader2Icon, SparklesIcon } from "lucide-react";

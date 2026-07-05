@@ -6,7 +6,7 @@ import {
   type IThumbnail,
   type ThumbnailStyle,
 } from "../assets/assets";
-import SoftBackDrop from "../components/SoftBackDrop";
+import SoftBackDrop from "../components/SoftBackdrop";
 import AspectRatioSelector from "../components/AspectRatioSelector";
 import StyleSelector from "../components/StyleSelector";
 import ColorSchemeSelector from "../components/ColorSchemeSelector";

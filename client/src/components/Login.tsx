@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import SoftBackDrop from "./SoftBackDrop";
+import SoftBackDrop from "./SoftBackdrop";
 import { useAuth } from "../context/AuthContext";
 import { UserIcon, MailIcon, LockIcon, AlertCircleIcon, Loader2Icon } from "lucide-react";
 
