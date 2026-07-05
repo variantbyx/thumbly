@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) {
+    console.log("MongoDB is already connected, skipping connection attempt...");
+    return;
+  }
+
   const primaryUri = process.env.MONGODB_URI;
   const fallbackUri = "mongodb://127.0.0.1:27017/thumbly";
 
