@@ -3,15 +3,26 @@ import cors from "cors";
 import "dotenv/config";
 import connectDB from "./configs/db.js";
 import session from "express-session";
-import MongoStore from "connect-mongo";
+import { MongoStore } from "connect-mongo";
 import AuthRouter from "./routes/AuthRoutes.js";
 import ThumbnailRouter from "./routes/ThumbnailRoutes.js";
 import UserRouter from "./routes/UserRoutes.js";
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const uploadsDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
 await connectDB();
 const app = express();
 app.use(cors({
     origin: [
         "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
         "http://localhost:3000",
         "https://thumbly-tau.vercel.app",
     ],
@@ -38,6 +49,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
     res.send("Server is Live!");
 });
+app.use("/uploads", express.static(uploadsDir));
 app.use("/api/auth", AuthRouter);
 app.use("/api/thumbnail", ThumbnailRouter);
 app.use("/api/user", UserRouter);
