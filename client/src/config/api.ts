@@ -1,4 +1,19 @@
-export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+let baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+
+// Auto-sanitize: Append "/api" if it is missing from the configured base URL
+if (!baseUrl.endsWith("/api") && !baseUrl.endsWith("/api/")) {
+  if (baseUrl.endsWith("/")) {
+    baseUrl = baseUrl.slice(0, -1);
+  }
+  baseUrl = `${baseUrl}/api`;
+}
+
+// Strip any trailing slash so that `${API_BASE_URL}${endpoint}` has no double slashes
+if (baseUrl.endsWith("/")) {
+  baseUrl = baseUrl.slice(0, -1);
+}
+
+export const API_BASE_URL = baseUrl;
 
 interface FetchOptions extends RequestInit {
   bodyData?: any;
