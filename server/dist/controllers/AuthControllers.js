@@ -74,10 +74,13 @@ export const logoutUser = async (req, res) => {
 // Controllers for user verify
 export const verifyUser = async (req, res) => {
     try {
-        const { userId } = req.session;
+        const { userId, isLoggedIn } = req.session;
+        if (!isLoggedIn || !userId) {
+            return res.json({ user: null });
+        }
         const user = await User.findById(userId).select("-password");
         if (!user) {
-            return res.status(400).json({ message: "Invalid user" });
+            return res.json({ user: null });
         }
         return res.json({ user });
     }
